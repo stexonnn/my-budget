@@ -1,0 +1,8 @@
+CREATE TABLE Account (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    currency VARCHAR(10) NOT NULL,
+    balance DECIMAL(15, 2) NOT NULL DEFAULT 0.00,
+    FOREIGN KEY (user_id ) REFERENCES User(id) ON DELETE CASCADE
+);

@@ -1,0 +1,15 @@
+*.class
+*.log
+*.jar
+*.war
+*.ear
+*.iml
+.mvn/
+.idea/
+target/
+bin/
+build/
+logs/
+.DS_Store
+*.swp
+*.bak
