@@ -1,23 +1,42 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
+
+import org.springframework.security.core.CredentialsContainer;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 
 @Entity
 @Table(name = "User")
-public class User {
+public class User implements Serializable,UserDetails{
 
-    @Id
+    
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String firstName;
+    
     private String lastName;
 
     @Column(unique = true)
     private String email;
 
     private String password;
+    
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Account> accounts;
@@ -62,6 +81,14 @@ public class User {
 		this.password = password;
 	}
 
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+	
 	public Set<Account> getAccounts() {
 		return accounts;
 	}
@@ -70,6 +97,44 @@ public class User {
 		this.accounts = accounts;
 	}
 
+	
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+        return Collections.singletonList(new SimpleGrantedAuthority(role.getName()));
+
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return this.getUsername();
+	}
+
+	  @Override
+	    public boolean isAccountNonExpired() {
+	        return true; 
+	    }
+
+	    @Override
+	    public boolean isAccountNonLocked() {
+	        return true; 
+	    }
+
+	    @Override
+	    public boolean isCredentialsNonExpired() {
+	        return true; 
+	    }
+
+	    @Override
+	    public boolean isEnabled() {
+	        return true;
+	    }
+
+		
+
+	
 
     
 }
