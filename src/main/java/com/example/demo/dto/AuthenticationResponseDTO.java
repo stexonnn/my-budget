@@ -1,8 +1,7 @@
 package com.example.demo.dto;
 
-import lombok.Builder;
 
-@Builder
+
 public class AuthenticationResponseDTO {
 
 	private String token;

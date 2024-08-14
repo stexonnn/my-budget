@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import com.example.demo.exception.InvalidRegisterException;
 import com.example.demo.model.User;
 import com.example.demo.service.AuthenticationService;
 
+
 @RestController
 @RequestMapping("/api/auth/")
 public class AuthenticationController {
@@ -25,7 +27,10 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authService;
 
-  
+    @PostMapping("login")
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequestDTO authRequestDTO) throws NotFoundException {
+        return new ResponseEntity<AuthenticationResponseDTO>(authService.authenticate(authRequestDTO), HttpStatus.OK);
+    }
 
     @PostMapping(value = "register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticationResponseDTO> createUser( @RequestBody RegisterRequestDTO registerDTO) throws Exception {

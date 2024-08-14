@@ -1,14 +1,12 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
-import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,7 +37,7 @@ public class User implements Serializable,UserDetails{
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Account> accounts;
+    private List<Account> accounts;
 
 	public Long getId() {
 		return id;
@@ -89,11 +87,11 @@ public class User implements Serializable,UserDetails{
 		this.role = role;
 	}
 	
-	public Set<Account> getAccounts() {
+	public List<Account> getAccounts() {
 		return accounts;
 	}
 
-	public void setAccounts(Set<Account> accounts) {
+	public void setAccounts(List<Account> accounts) {
 		this.accounts = accounts;
 	}
 
@@ -108,8 +106,7 @@ public class User implements Serializable,UserDetails{
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		return this.getUsername();
+		return this.email;
 	}
 
 	  @Override

@@ -40,10 +40,21 @@ public class JwtService {
 	}
 	
 	public String generateToken(Map<String, Object> extraClaims,UserDetails  userDetails) {
-		return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
-				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis()+ 1000*60*24))
-				.signWith(getSignInKey(),SignatureAlgorithm.HS256).compact();
+		try {
+	        System.out.println("Generating token for: " + userDetails.getUsername());
+	        String token = Jwts.builder()
+	            .setClaims(extraClaims)
+	            .setSubject(userDetails.getUsername())
+	            .setIssuedAt(new Date())
+	            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // 30 minutes expiration
+	            .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+	            .compact();
+	        System.out.println("Generated Token: " + token); // Debug statement
+	        return token;
+	    } catch (Exception e) {
+	        System.out.println("Error generating token: " + e.getMessage());
+	        throw e;
+	    }
 	}
 	
 	//for generating tokens without extra claims
