@@ -6,6 +6,12 @@ public class AccountDTO {
 	private String currency;
 	private double balance;
 	
+	public AccountDTO(String name, String currency, double balance) {
+		this.name=name;
+		this.currency=currency;
+		this.balance=balance;
+	}
+	
 	public String getName() {
 		return name;
 	}

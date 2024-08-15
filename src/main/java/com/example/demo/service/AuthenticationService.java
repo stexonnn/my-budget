@@ -62,30 +62,20 @@ public class AuthenticationService {
 	public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO authRequest) throws NotFoundException {
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
 				authRequest.getUsername(), authRequest.getPassword());
-		System.out.println("PROSLO");
-		System.out.println(authRequest.getUsername() + " username");
-		System.out.println(authRequest.getPassword() + " password");
 	    try {
 		Authentication auth = authManager.authenticate(authToken);
 		SecurityContext sc = SecurityContextHolder.getContext();
 		sc.setAuthentication(auth);
-		System.out.println("authentication successfu ");
 	    } catch (AuthenticationException e) {
-	        System.out.println("Authentication failed: " + e.getMessage());
 	        throw e;
 	    }
 		String email = authRequest.getUsername();
-		System.out.println(email);
 		Optional<User> userOptional = userRepository.findByEmail(email);
-		System.out.println(userOptional.get() + " objekat");
 		User user = userOptional.orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
-		System.out.println("PROSLO 2");
 		String jwt= jwtService.generateToken(user);
-		System.out.println(jwt + " jwt token");
 
 		AuthenticationResponseDTO authResponse = new AuthenticationResponseDTO();
 		authResponse.setToken(jwt);
-		System.out.println(jwt + " jwt token 2");
 		return authResponse;
 	    }
 		
