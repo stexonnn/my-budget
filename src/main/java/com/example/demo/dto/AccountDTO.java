@@ -2,16 +2,40 @@ package com.example.demo.dto;
 
 public class AccountDTO {
 	
+	private Long id;
 	private String name;
 	private String currency;
 	private double balance;
 	
-	public AccountDTO(String name, String currency, double balance) {
+	public AccountDTO(Long id,String name, String currency, double balance) {
+		this.id=id;
 		this.name=name;
 		this.currency=currency;
 		this.balance=balance;
 	}
 	
+	
+	
+	public AccountDTO(String name, String currency, Double balance) {
+		this.name=name;
+		this.currency=currency;
+		this.balance=balance;
+	}
+
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+
 	public String getName() {
 		return name;
 	}

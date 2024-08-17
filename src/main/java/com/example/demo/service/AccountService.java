@@ -68,7 +68,7 @@ public class AccountService {
         }
     }
 	
-	
+	/*
 	public double getTotalValue() {
 		Optional<User> userOptional = getUser();
 
@@ -86,11 +86,11 @@ public class AccountService {
 
 		throw new UserNotFoundException("User not found");
 	}
-
+*/
 	
 	private List<AccountDTO> convertToDTO(List<Account> accounts) {
         return accounts.stream()
-                       .map(account -> new AccountDTO(account.getName(),account.getCurrency(),account.getBalance()))
+                       .map(account -> new AccountDTO(account.getId(),account.getName(),account.getCurrency(),account.getBalance()))
                        .collect(Collectors.toList());
     }
 

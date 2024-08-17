@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import com.example.demo.model.Account;
 import com.example.demo.model.Transaction;
 
-public interface AccountRepository extends JpaRepository<Account,Integer> {
+public interface AccountRepository extends JpaRepository<Account,Long> {
 
 	@Query("SELECT t FROM Transaction t WHERE t.account = :account")
     List<Transaction> findAllTransactionsByAccount(@Param("account") Account account);

@@ -13,11 +13,15 @@ import com.example.demo.model.User;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.repository.TransactionRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.security.CurrentUser;
 
 import jakarta.transaction.Transactional;
 
 @Service
 public class UserService {
+	
+	@Autowired
+	CurrentUser currentUser;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -46,5 +50,15 @@ public class UserService {
 		}
 		
 		return true;
+	}
+	
+	public double getTotalValue() {
+		User user = currentUser.getUser();
+		double totalValue=0.0;
+    	List<Account> userAccounts= accountRepository.findByUserId(user.getId());
+    	for (Account a: userAccounts) {
+    		totalValue+=a.getBalance();
+    	}
+    	return totalValue;
 	}
 }

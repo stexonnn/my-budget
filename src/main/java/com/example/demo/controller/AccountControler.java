@@ -50,13 +50,13 @@ public class AccountControler {
 	            return ResponseEntity.ok(accountDTO);
 	            	              
 	}
-	
+	/*
 	@GetMapping("gettTotalValue")
 	public ResponseEntity<Double> getTotalValue()  {
 		
 	            Double totalValue = accountService.getTotalValue();
 	            return ResponseEntity.ok(totalValue);
 	            	              
-	}
+	}*/
 
 }

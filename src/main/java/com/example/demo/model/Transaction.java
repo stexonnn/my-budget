@@ -10,16 +10,15 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
     private String description;
     private Double amount;
 
     @ManyToOne
-    @JoinColumn(name = "accountId", nullable = false)
+    @JoinColumn(name = "account_Id", nullable = false)
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "transactionTypeId", nullable = false)
+    @JoinColumn(name = "transactionType_Id", nullable = false)
     private TransactionType transactionType;
 
 	public Long getId() {
@@ -30,13 +29,7 @@ public class Transaction {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public String getDescription() {
 		return description;
