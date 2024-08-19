@@ -28,6 +28,7 @@ public class AccountControler {
 	
 	@PostMapping("createAccount")
 	public ResponseEntity<?> createAccount(@RequestBody AccountDTO accountDTO ) throws  InvalidAccountException {
+			System.out.print(accountDTO.getBalance());
 	            Account account = accountService.createAccount(accountDTO);
 	            if (account!=null)
 	            	return ResponseEntity.ok().build();
@@ -37,8 +38,9 @@ public class AccountControler {
 	}
 	
 	@GetMapping("getAccounts")
-	public ResponseEntity<List<AccountDTO>> getAccounts()  {
+	public ResponseEntity<List<AccountDTO>> getAccounts() throws Exception  {
 	            List<AccountDTO> accountsDTO = accountService.getAccounts();
+	            accountsDTO = accountService.updateWithDefaultValues(accountsDTO);
 	            return ResponseEntity.ok(accountsDTO);
 	            	              
 	}

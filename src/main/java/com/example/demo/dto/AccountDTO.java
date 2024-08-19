@@ -1,11 +1,16 @@
 package com.example.demo.dto;
 
+
 public class AccountDTO {
 	
 	private Long id;
 	private String name;
 	private String currency;
 	private double balance;
+	
+	private double balanceInDefaultCurrency;
+	
+	public AccountDTO()  {}
 	
 	public AccountDTO(Long id,String name, String currency, double balance) {
 		this.id=id;
@@ -53,6 +58,18 @@ public class AccountDTO {
 	}
 	public void setBalance(double balance) {
 		this.balance = balance;
+	}
+
+
+
+	public double getBalanceInDefaultCurrency() {
+		return balanceInDefaultCurrency;
+	}
+
+
+
+	public void setBalanceInDefaultCurrency(double balanceInDefaultCurrency) {
+		this.balanceInDefaultCurrency = balanceInDefaultCurrency;
 	}
 
 	

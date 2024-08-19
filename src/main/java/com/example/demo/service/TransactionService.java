@@ -31,6 +31,9 @@ public class TransactionService {
 	
 	@Autowired 
 	TransactionTypeRepository ttRepository;
+	
+	@Autowired
+	CurrencyService currencyService;
 
 	public boolean save(TransactionDTO transactionDTO) {
 		System.out.print("izvrsava se cuvanje");
@@ -99,4 +102,5 @@ public class TransactionService {
 		return transaction;
 	}
 	
+
 }

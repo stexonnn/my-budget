@@ -16,9 +16,16 @@ import com.example.demo.model.Account;
 import com.example.demo.model.User;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.security.CurrentUser;
 
 @Service
 public class AccountService {
+	
+	@Autowired
+	CurrentUser currentUser;
+	
+	@Autowired
+	private CurrencyService currencyService;
 	
 	@Autowired
 	private AccountRepository accountRepository;
@@ -38,9 +45,8 @@ public class AccountService {
 		return accountRepository.save(account);
 	}
 	
-	public List<AccountDTO> getAccounts() {
-		Optional<User> userOptional = getUser();
-		User user = userOptional.get();
+	public List<AccountDTO> getAccounts() throws Exception {
+		User user = currentUser.getUser();
 		if (user!=null) {
 			List<Account> accounts= accountRepository.findByUserId(user.getId());
 				return convertToDTO(accounts);
@@ -48,6 +54,8 @@ public class AccountService {
 		 else
 			    return null;
 	}
+	
+	
 	
 	public AccountDTO getAccount(String accountName) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -88,7 +96,7 @@ public class AccountService {
 	}
 */
 	
-	private List<AccountDTO> convertToDTO(List<Account> accounts) {
+	private List<AccountDTO> convertToDTO(List<Account> accounts) throws Exception {
         return accounts.stream()
                        .map(account -> new AccountDTO(account.getId(),account.getName(),account.getCurrency(),account.getBalance()))
                        .collect(Collectors.toList());
@@ -102,5 +110,30 @@ public class AccountService {
         return userOptional;
 	}
 
+	
+	public List<AccountDTO> updateWithDefaultValues(List<AccountDTO> accounts) throws Exception {
+		double defaultCurrencyValue = currencyService.defaultValue(accounts.get(0).getCurrency());
+	    System.out.println("Default Currency Value: " + defaultCurrencyValue);
+	    
+	    for (AccountDTO acc : accounts) {
+	        // Ensure balance and default currency values are treated as Double
+	        Double balance = acc.getBalance();  // Ensure this returns a Double
+	        Double currencyValue = currencyService.defaultValue(acc.getCurrency());  // Ensure this returns a Double
+
+	        // Debugging: Check the types before multiplication
+	        System.out.println("Balance Type: " + ((Object) balance).getClass().getName());
+	        System.out.println("Currency Value Type: " + ((Object) currencyValue).getClass().getName());
+
+	        // Perform the multiplication and set the balance in the default currency
+	        Double balanceInDefaultCurrency = balance * currencyValue;
+	        acc.setBalanceInDefaultCurrency(balanceInDefaultCurrency);
+
+	        // Debugging: Check the result
+	        System.out.println("Balance in Default Currency: " + balanceInDefaultCurrency);
+	    }
+	    
+	    return accounts;
+		
+	}
 
 }

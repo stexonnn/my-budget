@@ -13,7 +13,7 @@ public class Account {
 
     private String name;
     private String currency;
-    private Double balance;
+    private double balance;
 
     @ManyToOne
     @JoinColumn(name = "user_Id", nullable = false)
@@ -46,11 +46,11 @@ public class Account {
 		this.currency = currency;
 	}
 
-	public Double getBalance() {
+	public double getBalance() {
 		return balance;
 	}
 
-	public void setBalance(Double balance) {
+	public void setBalance(double balance) {
 		this.balance = balance;
 	}
 

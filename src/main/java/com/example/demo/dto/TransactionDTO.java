@@ -5,6 +5,7 @@ public class TransactionDTO {
 	  private Long account;
 	  private String description;
 	  private Double amount;
+	  private Double amountInDefaultCurrrency;
 	  private String type;
 	  
 	  public Long getAccount() {
@@ -37,6 +38,14 @@ public class TransactionDTO {
 	  public void setType(String type) {
 			this.type = type;
 		}
+
+	public Double getAmountInDefaultCurrrency() {
+		return amountInDefaultCurrrency;
+	}
+
+	public void setAmountInDefaultCurrrency(Double amountInDefaultCurrrency) {
+		this.amountInDefaultCurrrency = amountInDefaultCurrrency;
+	}
 
 
 		  

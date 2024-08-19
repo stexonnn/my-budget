@@ -35,6 +35,13 @@ public class GlobalExceptionHandler {
 	    	
 	    }
 	 
+	 @ExceptionHandler(IllegalArgumentException.class)
+	    public ResponseEntity<Object> handleInvalidAccountException(IllegalArgumentException ex) {
+	    		ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.CONFLICT.value());
+	    			return new ResponseEntity<>(errorResponse,HttpStatus.CONFLICT);  
+	    	
+	    }
+	 
 	 @ExceptionHandler(UserNotFoundException.class)
 	    public ResponseEntity<ErrorResponse> handleNotFoundException(UserNotFoundException ex) {
 	        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND.value());

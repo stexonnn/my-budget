@@ -35,21 +35,22 @@ public class UserService {
 	//  @Transactional to ensure that all database operations are performed within a transaction
 	@Transactional
 	public boolean deleteAllAccounts() {
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		Optional<User> userOptional = userRepository.findByEmail(username);
-		  if (userOptional.isEmpty()) 
-	            return false;
-	        
-		User user = userOptional.get();
+		try {
+		User user = currentUser.getUser();
 		
-		List<Account> accounts = user.getAccounts();
-		
+		List<Account> accounts = accountRepository.findByUserId(user.getId());
+
 		for (Account account: accounts) {
-			transactionRepository.deleteByAccount(account);
-			accountRepository.delete(account);
+			transactionRepository.deleteByAccountId(account.getId());
+	        accountRepository.delete(account);
 		}
 		
 		return true;
+		}  catch (Exception e) {
+	        // Log exception
+	        System.err.println("Error deleting accounts: " + e.getMessage());
+	        return false;
+	    }
 	}
 	
 	public double getTotalValue() {
