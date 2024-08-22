@@ -88,7 +88,6 @@ public class TransactionService implements ITransactionService{
  	}
 	
 	public Transaction convertFromDTO(TransactionDTO tDTO) {
-		System.out.println(tDTO.getDescription() + tDTO.getType() + tDTO.getAccount() + tDTO.getAmount());
 		if (tDTO == null)
 			return null;
 		Transaction transaction = new Transaction();
@@ -112,7 +111,6 @@ public class TransactionService implements ITransactionService{
                 //null?	
 		        Double balanceInDefaultCurrency = currencyService.convertToDefault(tran.getAmount(), acc.getCurrency());
 		        tran.setAmountInDefaultCurrrency(balanceInDefaultCurrency);
-		        System.out.println("vREDNOST DIFOLT" + tran.getAmountInDefaultCurrrency());
 		    }
 		    
 		    return transactions;

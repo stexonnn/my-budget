@@ -83,7 +83,6 @@ public class CurrencyService implements ICurrencyService {
 	    }
 
 	    public String getLastUpdated() {
-	    	System.out.println(this.lastUpdated);
 	    	 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 	         String formattedDate = this.lastUpdated.format(formatter);
 	        return formattedDate;
@@ -106,7 +105,6 @@ public class CurrencyService implements ICurrencyService {
 	    		return value;
 	    	}
 	    	double euroRate = euroRate(from);
-	    	System.out.println("euro rate " + euroRate);
 	    	double valueInEuro = value  / euroRate;
 	    	
 	    	double defaultRate = 0.0;

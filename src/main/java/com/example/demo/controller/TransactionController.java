@@ -36,7 +36,6 @@ public class TransactionController {
 	
 	@PostMapping("save")
 	public ResponseEntity<?> save(@RequestBody TransactionDTO transactionDTO) {
-		System.out.println("asdas");
 		transactionService.save(transactionDTO);
 		return ResponseEntity.ok("true");
 	}

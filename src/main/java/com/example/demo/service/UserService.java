@@ -36,7 +36,6 @@ public class UserService implements IUserService {
 	@Autowired 
 	private TransactionRepository transactionRepository;
 	
-	//  @Transactional to ensure that all database operations are performed within a transaction
 	@Transactional
 	public boolean deleteAllAccounts() {
 		try {
@@ -51,8 +50,7 @@ public class UserService implements IUserService {
 		
 		return true;
 		}  catch (Exception e) {
-	        // Log exception
-	        System.err.println("Error deleting accounts: " + e.getMessage());
+	       
 	        return false;
 	    }
 	}
@@ -65,9 +63,7 @@ public class UserService implements IUserService {
     		double balance = a.getBalance();
     		String accountCurrency = a.getCurrency();
     		if (a.getCurrency()!=null) {
-    			System.out.println(currencyService.convertToDefault(a.getBalance(), accountCurrency));
     			 balance = balance + currencyService.convertToDefault(a.getBalance(), accountCurrency);
-    			 System.out.print(balance + "balans");
     		}
     		totalValue+=balance;
     	}
