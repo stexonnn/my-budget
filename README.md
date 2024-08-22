@@ -1,4 +1,4 @@
-# Budget Tracking App
+# My-budget App
 
 ## Running the Application
 
