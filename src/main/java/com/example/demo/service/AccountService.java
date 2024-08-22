@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -17,15 +18,16 @@ import com.example.demo.model.User;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.CurrentUser;
+import com.example.demo.security.ICurrentUser;
 
 @Service
-public class AccountService {
+public class AccountService implements IAccountService {
 	
 	@Autowired
-	CurrentUser currentUser;
+	ICurrentUser currentUser;
 	
 	@Autowired
-	private CurrencyService currencyService;
+	private ICurrencyService currencyService;
 	
 	@Autowired
 	private AccountRepository accountRepository;
@@ -33,16 +35,19 @@ public class AccountService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public Account createAccount(AccountDTO accountDTO) {
+	public AccountDTO createAccount(AccountDTO accountDTO) throws Exception {
 		Account account = new Account();
-
-		Optional<User> userOptional = getUser();
-		User user = userOptional.get();
+		
+        User user = currentUser.getUser();
 		account.setName(accountDTO.getName());
 		account.setBalance(accountDTO.getBalance());
 		account.setCurrency(accountDTO.getCurrency());
 		account.setUser(user);
-		return accountRepository.save(account);
+		Account acc =  accountRepository.save(account);
+		List<AccountDTO> accountsDTO = this.convertToDTO((List<Account>) acc);
+		if (accountsDTO.size()<1)
+			return null;
+		return accountsDTO.get(0);
 	}
 	
 	public List<AccountDTO> getAccounts() throws Exception {
@@ -57,44 +62,23 @@ public class AccountService {
 	
 	
 	
-	public AccountDTO getAccount(String accountName) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Optional<User> userOptional = getUser();
+	 public AccountDTO getAccount(String accountName) throws Exception {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            User user = currentUser.getUser();
 
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
+        	
             Optional<Account> accountOptional = accountRepository.findByUserIdAndName(user.getId(), accountName);
 
             if (accountOptional.isPresent()) {
-                Account account = accountOptional.get();
-                return new AccountDTO(account.getName(),account.getCurrency(),account.getBalance());
+               Account account = accountOptional.get();
+               return new AccountDTO(account.getName(),account.getCurrency(),account.getBalance());
             } else {
                 throw new NoSuchElementException("No account found with name: " + accountName);
             }
-        } else {
-            throw new UsernameNotFoundException("User not found with email: " + username);
-        }
+                     
     }
 	
-	/*
-	public double getTotalValue() {
-		Optional<User> userOptional = getUser();
-
-        if (userOptional.isPresent()) {
-        	double totalValue=0.0;
-        	User user = userOptional.get();
-        	List<Account> userAccounts= accountRepository.findByUserId(user.getId());
-        	for (Account a: userAccounts) {
-        		totalValue+=a.getBalance();
-        	}
-        	return totalValue;
-        
-        	
-        }
-
-		throw new UserNotFoundException("User not found");
-	}
-*/
+	
 	
 	private List<AccountDTO> convertToDTO(List<Account> accounts) throws Exception {
         return accounts.stream()
@@ -104,32 +88,17 @@ public class AccountService {
 
 
 	
-	public Optional<User> getUser() {
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Optional<User> userOptional = userRepository.findByEmail(username);
-        return userOptional;
-	}
-
 	
 	public List<AccountDTO> updateWithDefaultValues(List<AccountDTO> accounts) throws Exception {
-		double defaultCurrencyValue = currencyService.defaultValue(accounts.get(0).getCurrency());
-	    System.out.println("Default Currency Value: " + defaultCurrencyValue);
+		
 	    
 	    for (AccountDTO acc : accounts) {
 	        // Ensure balance and default currency values are treated as Double
-	        Double balance = acc.getBalance();  // Ensure this returns a Double
-	        Double currencyValue = currencyService.defaultValue(acc.getCurrency());  // Ensure this returns a Double
-
-	        // Debugging: Check the types before multiplication
-	        System.out.println("Balance Type: " + ((Object) balance).getClass().getName());
-	        System.out.println("Currency Value Type: " + ((Object) currencyValue).getClass().getName());
-
-	        // Perform the multiplication and set the balance in the default currency
-	        Double balanceInDefaultCurrency = balance * currencyValue;
+	        
+	        Double balanceInDefaultCurrency = currencyService.convertToDefault(acc.getBalance(), acc.getCurrency());
+	        System.out.println(acc.getBalance() + " " + acc.getCurrency());
 	        acc.setBalanceInDefaultCurrency(balanceInDefaultCurrency);
 
-	        // Debugging: Check the result
-	        System.out.println("Balance in Default Currency: " + balanceInDefaultCurrency);
 	    }
 	    
 	    return accounts;

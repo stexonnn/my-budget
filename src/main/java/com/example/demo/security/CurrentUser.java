@@ -10,15 +10,19 @@ import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 
 @Service
-public class CurrentUser {
+public class CurrentUser implements ICurrentUser {
 
 	@Autowired 
 	UserRepository userRepository;
 	
 	
-	public  User getUser() {
+	public  User getUser() throws Exception {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<User> userOptional = userRepository.findByEmail(username);
+       
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("No user found");
+        }
  
         return userOptional.get();
 	}

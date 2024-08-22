@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
@@ -14,15 +15,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.AccountDTO;
+
 import com.example.demo.dto.AuthenticationRequestDTO;
 import com.example.demo.dto.AuthenticationResponseDTO;
 import com.example.demo.dto.RegisterRequestDTO;
-import com.example.demo.exception.InvalidAuthException;
-import com.example.demo.exception.InvalidRegisterException;
-import com.example.demo.model.User;
-import com.example.demo.service.AccountService;
-import com.example.demo.service.AuthenticationService;
+
+import com.example.demo.service.IAuthenticationService;
+
+import jakarta.validation.Valid;
+
 
 
 @RestController
@@ -30,34 +31,21 @@ import com.example.demo.service.AuthenticationService;
 public class AuthenticationController {
 
     @Autowired
-    private AuthenticationService authService;
+    private IAuthenticationService authService;
 	
     
     
     @PostMapping("login")
-    public ResponseEntity<AuthenticationResponseDTO> login(@RequestBody AuthenticationRequestDTO authRequestDTO) throws NotFoundException {
-    	AuthenticationResponseDTO ar = authService.authenticate(authRequestDTO);
-        return new ResponseEntity<AuthenticationResponseDTO>(ar, HttpStatus.OK);
+    public ResponseEntity<AuthenticationResponseDTO> login(@Valid @RequestBody AuthenticationRequestDTO authRequestDTO) throws NotFoundException {
+    	AuthenticationResponseDTO authResponse = authService.authenticate(authRequestDTO);
+        return  ResponseEntity.ok(authResponse);
     }
 
     @PostMapping(value = "register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthenticationResponseDTO> createUser( @RequestBody RegisterRequestDTO registerDTO) throws Exception {
-        try {
+    public ResponseEntity<AuthenticationResponseDTO> createUser(@Valid @RequestBody RegisterRequestDTO registerDTO) throws Exception {
             AuthenticationResponseDTO authResponse = authService.registerUser(registerDTO);
-            return ResponseEntity.ok(authResponse);
-        } catch (Exception e) {
-
-            throw new InvalidRegisterException("Registration failed");
-        }
+            return ResponseEntity.ok(authResponse); 
     }
-    /*
-    @PostMapping(value = "authenticate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthenticationResponseDTO> authUser(@RequestBody AuthenticationRequestDTO authRequest) throws Exception {
-        try {
-            return  ResponseEntity.ok(authService.authenticate(authRequest));
-        }    catch (Exception e) {
-
-            throw new InvalidAuthException("Authentication failed");
-        }    
-    }*/
+    
+  
 }

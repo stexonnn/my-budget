@@ -14,14 +14,18 @@ import com.example.demo.repository.AccountRepository;
 import com.example.demo.repository.TransactionRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.CurrentUser;
+import com.example.demo.security.ICurrentUser;
 
 import jakarta.transaction.Transactional;
 
 @Service
-public class UserService {
+public class UserService implements IUserService {
 	
 	@Autowired
-	CurrentUser currentUser;
+	ICurrentUser currentUser;
+	
+	@Autowired
+	ICurrencyService currencyService;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -36,7 +40,7 @@ public class UserService {
 	@Transactional
 	public boolean deleteAllAccounts() {
 		try {
-		User user = currentUser.getUser();
+			User user = currentUser.getUser();
 		
 		List<Account> accounts = accountRepository.findByUserId(user.getId());
 
@@ -53,12 +57,19 @@ public class UserService {
 	    }
 	}
 	
-	public double getTotalValue() {
+	public double getTotalValue() throws Exception {
 		User user = currentUser.getUser();
 		double totalValue=0.0;
     	List<Account> userAccounts= accountRepository.findByUserId(user.getId());
     	for (Account a: userAccounts) {
-    		totalValue+=a.getBalance();
+    		double balance = a.getBalance();
+    		String accountCurrency = a.getCurrency();
+    		if (a.getCurrency()!=null) {
+    			System.out.println(currencyService.convertToDefault(a.getBalance(), accountCurrency));
+    			 balance = balance + currencyService.convertToDefault(a.getBalance(), accountCurrency);
+    			 System.out.print(balance + "balans");
+    		}
+    		totalValue+=balance;
     	}
     	return totalValue;
 	}

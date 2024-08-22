@@ -17,9 +17,7 @@ public class Transaction {
     @JoinColumn(name = "account_Id", nullable = false)
     private Account account;
 
-    @ManyToOne
-    @JoinColumn(name = "transactionType_Id", nullable = false)
-    private TransactionType transactionType;
+    private String type;
 
 	public Long getId() {
 		return id;
@@ -55,13 +53,17 @@ public class Transaction {
 		this.account = account;
 	}
 
-	public TransactionType getTransactionType() {
-		return transactionType;
+	public String getType() {
+		return type;
 	}
 
-	public void setTransactionType(TransactionType transactionType) {
-		this.transactionType = transactionType;
+	public void setType(String type) {
+		this.type = type;
 	}
+
+	
+
+
 
     
     

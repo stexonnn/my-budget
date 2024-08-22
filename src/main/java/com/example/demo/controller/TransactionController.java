@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.TransactionDTO;
+import com.example.demo.service.ITransactionService;
 import com.example.demo.service.TransactionService;
 
 @RestController
@@ -19,16 +20,16 @@ import com.example.demo.service.TransactionService;
 public class TransactionController {
 
 	@Autowired
-	TransactionService transactionService;
+	ITransactionService transactionService;
 	
 	@GetMapping("getAll")
-	public ResponseEntity<List<TransactionDTO>> getTransactions() {
+	public ResponseEntity<List<TransactionDTO>> getTransactions() throws Exception {
 		return ResponseEntity.ok(transactionService.getAllTransactions());
 		
 	}
 	
 	@GetMapping("get/{account_id}")
-	public ResponseEntity<List<TransactionDTO>> getTransactions(@PathVariable String account_id) {
+	public ResponseEntity<List<TransactionDTO>> getTransactions(@PathVariable String account_id) throws Exception {
 		return ResponseEntity.ok(transactionService.getTransactions(account_id));
 		
 	}

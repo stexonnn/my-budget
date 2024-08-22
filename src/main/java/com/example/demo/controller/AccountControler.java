@@ -16,22 +16,23 @@ import com.example.demo.exception.InvalidAccountException;
 import com.example.demo.exception.InvalidAuthException;
 import com.example.demo.model.Account;
 import com.example.demo.service.AccountService;
+import com.example.demo.service.IAccountService;
 
 @RestController
 @RequestMapping("/api/account/")
 public class AccountControler {
 	
 	@Autowired
-	private AccountService accountService;
+	private IAccountService accountService;
 	
 	
 	
 	@PostMapping("createAccount")
-	public ResponseEntity<?> createAccount(@RequestBody AccountDTO accountDTO ) throws  InvalidAccountException {
+	public ResponseEntity<?> createAccount(@RequestBody AccountDTO accountDTO ) throws  Exception {
 			System.out.print(accountDTO.getBalance());
-	            Account account = accountService.createAccount(accountDTO);
-	            if (account!=null)
-	            	return ResponseEntity.ok().build();
+	            AccountDTO response = accountService.createAccount(accountDTO);
+	            if (response!=null)
+	            	return ResponseEntity.ok(response);
 	            else 
 	            	throw new InvalidAccountException("Account creation failed!");
 	            	              
@@ -46,19 +47,12 @@ public class AccountControler {
 	}
 	
 	@GetMapping("getAccount/{accountName}")
-	public ResponseEntity<AccountDTO> getAccount(@PathVariable String accountName )  {
+	public ResponseEntity<AccountDTO> getAccount(@PathVariable String accountName ) throws Exception  {
 		
 	            AccountDTO accountDTO = accountService.getAccount(accountName);
 	            return ResponseEntity.ok(accountDTO);
 	            	              
 	}
-	/*
-	@GetMapping("gettTotalValue")
-	public ResponseEntity<Double> getTotalValue()  {
-		
-	            Double totalValue = accountService.getTotalValue();
-	            return ResponseEntity.ok(totalValue);
-	            	              
-	}*/
+
 
 }

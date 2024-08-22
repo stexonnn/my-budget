@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity
-@Table(name = "User")
+@Table(name = "Korisnik")
 public class User implements Serializable,UserDetails{
 
     
@@ -38,6 +38,19 @@ public class User implements Serializable,UserDetails{
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Account> accounts;
+
+	
+
+	public User(String firstName, String lastName, String email, String password) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+	}
+
+	public User() {
+	}
 
 	public Long getId() {
 		return id;

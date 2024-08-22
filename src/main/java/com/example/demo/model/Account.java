@@ -1,6 +1,10 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,7 +20,7 @@ public class Account {
     private double balance;
 
     @ManyToOne
-    @JoinColumn(name = "user_Id", nullable = false)
+    @JoinColumn(name = "korisnik_id", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -70,6 +74,21 @@ public class Account {
 		this.transactions = transactions;
 	}
 
+	public List<Transaction> getTransactionsList() {
+		List<Transaction> tran = new ArrayList<>(this.transactions);
+		return tran;
+	}
+	
+	public void setTransactionList(List<Transaction> tran) {
+		this.transactions = new HashSet<>(tran);
+	}
+
+	@Override
+	public String toString() {
+		return "Account [id=" + id + ", name=" + name + ", currency=" + currency + ", balance=" + balance + ", user="
+				+ user + ", transactions=" + transactions + "]";
+	}
+
     
-    
+	
 }

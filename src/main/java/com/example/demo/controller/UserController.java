@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.service.IUserService;
 import com.example.demo.service.UserService;
 
 @RestController
@@ -15,10 +16,10 @@ import com.example.demo.service.UserService;
 public class UserController {
 	
 	@Autowired
-	private UserService userService;
+	private IUserService userService;
 	
 	 @GetMapping("getTotalValue") 
-	 public ResponseEntity<?> getTotalValue() {
+	 public ResponseEntity<?> getTotalValue() throws Exception {
 		 return ResponseEntity.ok(userService.getTotalValue());
 	 }
 	 

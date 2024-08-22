@@ -7,6 +7,8 @@ public class TransactionDTO {
 	  private Double amount;
 	  private Double amountInDefaultCurrrency;
 	  private String type;
+	  private String currency;
+	  private String accountName;
 	  
 	  public Long getAccount() {
 			return account;
@@ -46,6 +48,24 @@ public class TransactionDTO {
 	public void setAmountInDefaultCurrrency(Double amountInDefaultCurrrency) {
 		this.amountInDefaultCurrrency = amountInDefaultCurrrency;
 	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+
+	public String getAccountName() {
+		return accountName;
+	}
+
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+	
+	
 
 
 		  

@@ -1,7 +1,5 @@
 package com.example.demo.dto;
 
-
-
 public class AuthenticationResponseDTO {
 
 	private String token;
