@@ -25,7 +25,7 @@ spring.jpa.hibernate.ddl-auto=none
 spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 
-
+### Flyway setup 
 
 spring.flyway.url=jdbc:mysql://localhost/your_database
 
