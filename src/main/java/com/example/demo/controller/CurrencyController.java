@@ -34,8 +34,6 @@ public class CurrencyController {
     
     @GetMapping("getLastUpdated")
     public ResponseEntity<Map<String,String>> getLastUpdated() {
-    	System.out.println("radii");
-    	System.out.println(currencyService.getLastUpdated());
     	String date = currencyService.getLastUpdated();
     	Map<String,String> responseMap = new HashMap<>();
     	responseMap.put("lastUpdated", date);
@@ -44,7 +42,6 @@ public class CurrencyController {
     
     @PutMapping("updateDefaultCurrency")
     public ResponseEntity<?> updateDefaultCurrency(@RequestBody String value) {
-    	System.out.print(value);
     	return ResponseEntity.ok(currencyService.setDefaultCurrency(value));
     }
     
@@ -53,7 +50,6 @@ public class CurrencyController {
     	String curr = currencyService.getDefaultCurrency();
     	Map<String,String> responseMap= new HashMap<>();
     	responseMap.put("currency", curr);
-    	System.out.println("Vrednost" + currencyService.getDefaultCurrency());
     	return ResponseEntity.ok(responseMap);
     }
 }

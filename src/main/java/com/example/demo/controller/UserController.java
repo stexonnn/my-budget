@@ -25,7 +25,6 @@ public class UserController {
 	 
 	 @DeleteMapping("delete")
 	 public ResponseEntity<Void> deleteAllData() {
-		 System.out.println("dletuje se");
 		   boolean successful = userService.deleteAllAccounts();
 	        if (!successful) {
 	            return new ResponseEntity<>(HttpStatus.NOT_FOUND);

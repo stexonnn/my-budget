@@ -25,8 +25,6 @@ public class LoadDataService implements ILoadDataService{
 	
 		private List<Account> accounts= new ArrayList<Account>();
 	
-
-	
 	    public void loadData() {
 	        parseXmlFile( "my_budget_data.xml");
 	        
@@ -52,7 +50,6 @@ public class LoadDataService implements ILoadDataService{
 	    }
 	    
 	    private Account convertToAccount(AccountXml accXml) {
-	    	System.out.println(accXml.getName());
 	    		Account acc = new Account();
 	    		acc.setBalance(accXml.getBalance());
 	    		acc.setCurrency(accXml.getCurrency());
@@ -75,7 +72,6 @@ public class LoadDataService implements ILoadDataService{
 		    	}
 		    		t.setAccount(acc);
 		    		transactions.add(t);
-		    		System.out.print(t.getAmount());
 		       }
 		    	acc.setTransactionList(transactions);
 		        }

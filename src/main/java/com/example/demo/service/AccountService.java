@@ -90,15 +90,12 @@ public class AccountService implements IAccountService {
 	
 	
 	public List<AccountDTO> updateWithDefaultValues(List<AccountDTO> accounts) throws Exception {
-		
-	    
 	    for (AccountDTO acc : accounts) {
 	        // Ensure balance and default currency values are treated as Double
 	        
 	        Double balanceInDefaultCurrency = currencyService.convertToDefault(acc.getBalance(), acc.getCurrency());
 	        System.out.println(acc.getBalance() + " " + acc.getCurrency());
 	        acc.setBalanceInDefaultCurrency(balanceInDefaultCurrency);
-
 	    }
 	    
 	    return accounts;
