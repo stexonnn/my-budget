@@ -6,7 +6,7 @@
 
 - **Java 17** or higher
 - **MySQL Database**
-- *FlyWay migration tools
+- **FlyWay** migration tools
 
 ### Setup
 
